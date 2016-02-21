@@ -13,9 +13,21 @@ express_app.use(bodyParser.json());
 
 // VARIABLES - TMP //
 var districts = [
-	{ name:"Creteil-Université" },
-	{ name:"Boulogne" },
-	{ name:"République" }
+	{ _id:"1", name:"Creteil-Université" },
+	{ _id:"2", name:"Boulogne" },
+	{ _id:"3", name:"République" }
+];
+
+var categories = [
+	{ _id:"1", name:"PIZZAS", image : "photo.jpg" },
+	{ _id:"2", name:"PATES", image : "photo.jpg"  },
+	{ _id:"3", name:"DESSERTS", image : "photo.jpg"  }
+];
+
+var products = [
+	{ _id:"10", name:"pizza_marguarita", id_cat:"1", image:"photo.jpg",prix:"100"},
+	{ _id:"11", name:"spaghetti_bolonaise",id_cat:"2", image:"photo.jpg",prix:"100"},
+	{ _id:"12", name:"glace",id_cat:"3", image:"photo.jpg",prix:"100"}
 ];
 
 // ROOT DEFINITIONS //
@@ -31,6 +43,21 @@ express_app.get('/districts', function(req,res){
 	console.log("Recuperation des quartiers");
 	console.log(districts);
 	res.json(districts);
+});
+
+//get produits function
+express_app.get('/categories', function(req,res){
+	console.log("Recuperation des categories");
+	console.log(categories);
+	res.json(categories);
+});
+
+
+//get produits function
+express_app.get('/products', function(req,res){
+	console.log("Recuperation des produits");
+	console.log(products);
+	res.json(products);
 });
 
 
