@@ -1,1 +1,51 @@
-HELLO
+<!DOCTYPE html>
+
+<htlm>
+	<head>
+		<title></title>
+
+		<!-- BOOTSTRAP COMPONENTS -->
+		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
+
+	</head>
+	<body ng-app="alloamine_module">
+
+		<!-- div class="container" ng-controller="AppCtrl" -->
+		<div class="container" ng-controller="alloamine_controller">
+
+			<h1>...</h1>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>name</th>
+						<th>actions</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><input type="text" class="form-control" ng-model="newcategory.name"></td>
+						<td><button class="btn btn-primary" type="button" ng-click="saveCategory()">save</button></td>
+						<td><button class="btn btn-primary" type="button" ng-click="clear()">clear</button></td>
+					</tr>
+					<tr ng-repeat="category in categories">
+						<td><button class="btn btn-primary" type="button" ng-click="updateSelectedCategory(category._id)">{{category.name}}</button></td>
+						<td>
+							<button class="btn btn-danger" type="button" ng-click="removeCategory(category._id)">remove</button>
+						</td>
+						<td>
+							<button class="btn btn-info" type="button" ng-click="updateCategory(category)">update</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			{{selectedcategory.name}}
+		</div>
+
+		<!-- ANGULAR COMPONENTS -->
+		<script src="/node_modules/angular/angular.js"></script>
+		<script src="/public/module/alloamine_module.js"></script>
+		<script src="/public/controller/alloamine_controller.js"></script>
+	</body>
+</html> 

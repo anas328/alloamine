@@ -12,28 +12,16 @@ express_app.use('/public', express.static(__dirname + "/public"));
 express_app.use('/node_modules',  express.static(__dirname + '/node_modules'));
 express_app.use(bodyParser.json());
 
-// var categories = [
-// 	{ _id:"1", name:"PIZZAS", image : "photo.jpg" },
-// 	{ _id:"2", name:"PATES", image : "photo.jpg"  },
-// 	{ _id:"3", name:"DESSERTS", image : "photo.jpg"  }
-// ];
-
-// var products = [
-// 	{ _id:"10", name:"pizza_marguarita", id_cat:"1", image:"photo.jpg",prix:"100"},
-// 	{ _id:"11", name:"spaghetti_bolonaise",id_cat:"2", image:"photo.jpg",prix:"100"},
-// 	{ _id:"12", name:"glace",id_cat:"3", image:"photo.jpg",prix:"100"}
-// ];
-
 // ROOT DEFINITIONS //
 
-//get quartier function
+// HOME PAGE
 express_app.get('/', function(req,res){
 	console.log("Page d'accueil");
 	res.sendFile(__dirname + "/public/index.html");
 });
 
-//get quartier function
-express_app.get('/districts', function(req,res){
+// RETRIEVES ALL THE DISTRICTS
+express_app.post('/districts', function(req,res){
 	db.district.find(function(err, docs) {
 		console.log("Recuperation des quartiers");
 		console.log(docs);
@@ -41,23 +29,130 @@ express_app.get('/districts', function(req,res){
 	});
 });
 
-//get produits function
-express_app.get('/categories', function(req,res){
+// RETRIEVES A DISTRICT BY ITS ID
+express_app.post('/district', function(req,res){
+	districtId = mongojs.ObjectId(req.body.districtId);
+	db.district.find({_id:districtId}, function(err, doc) {
+		console.log(("Recuperation le quartier [ " + req.body.districtId +" ]"));
+		console.log(doc);
+		res.json(doc);
+	});
+});
+
+// SAVES A DISTRICT BY ITS ID
+express_app.post('/savedistrict', function(req,res){
+	id = mongojs.ObjectId(req.body.district._id);
+	db.district.save({
+		_id:id,
+		name:req.body.district.name
+	},
+	function(err, docs) {
+		console.log(("Enregistre le quartier [ " + req.body.district.name + " ]"));
+		console.log(docs);
+		res.json(docs);
+	});
+});
+
+// REMOVE A DISTRICT BY ITS ID
+express_app.post('/removedistrict', function(req,res){
+	districtId = mongojs.ObjectId(req.body.districtId);
+	db.district.remove({_id:districtId}, function(err, docs) {
+		console.log("Supprime un quartier [ " + req.body.districtId + " ]");
+		console.log(docs);
+		res.json(docs);
+	});
+});
+
+// RETRIEVES ALL THE DISTRCTS
+express_app.post('/categories', function(req,res){
 	db.category.find(function(err, docs) {
-		console.log("Recuperation des categories");
+		console.log("Recuperation les categories");
+		console.log(docs);
+		res.json(docs);
+	});
+});
+
+// RETRIEVES A CATEGORY BY ITS ID
+express_app.post('/category', function(req,res){
+	categoryId = mongojs.ObjectId(req.body.categoryId);
+	db.category.findOne({_id:categoryId}, function(err, doc) {
+		console.log(("Recuperation le categorie [ " + req.body.categoryId +" ]"));
+		console.log(doc);
+		res.json(doc);
+	});
+});
+
+// SAVES A CATEGORY BY ITS ID
+express_app.post('/savecategory', function(req,res){
+	id = mongojs.ObjectId(req.body.newcategory._id);
+	db.category.save({
+		_id:id,
+		name:req.body.newcategory.name,
+		image:req.body.newcategory.image
+	},
+	function(err, docs) {
+		console.log(("Enregistre le catégorie [ " + req.body.newcategory.name + " ]"));
+		console.log(docs);
+		res.json(docs);
+	});
+});
+
+// REMOVE A CATEGORY BY ITS ID
+express_app.post('/removecategory', function(req,res){
+	categoryId = mongojs.ObjectId(req.body.categoryId);
+	db.category.remove({_id:categoryId}, function(err, docs) {
+		console.log("Supprime un catégorie [ " + req.body.categoryId + " ]");
 		console.log(docs);
 		res.json(docs);
 	});
 });
 
 
-//get produits function
+// RETRIEVES ALL THE PRODUCTS BY CATEGORY ID
 express_app.post('/products', function(req,res){
-	// category = req.body.category;
-	
-	category = { _id:mongojs.ObjectId("56c9ec79d8dc9751d945611b"), name:"PIZZAS", image : "photo.jpg" };
-	db.product.find({"id_cat":category._id}, function(err, docs) {
-		// console.log("Recuperation des produits de la categorie %s", category._id);
+
+	category = req.body.category;
+	cat_id = mongojs.ObjectId(category._id)
+	console.log(category);
+	db.product.find({"id_cat":cat_id}, function(err, docs) {
+		console.log(("Recuperation des produits de la categorie [ " + category._id + " ]"));
+		console.log(docs);
+		res.json(docs);
+	});
+});
+
+// RETRIEVES A PRODUCT BY ITS ID
+express_app.post('/product', function(req,res){
+	productId = mongojs.ObjectId(req.body.productId);
+	db.producct.find({_id:productId}, function(err, doc) {
+		console.log(("Recuperation du produit [ " + req.body.productId +" ]"));
+		console.log(doc);
+		res.json(doc);
+	});
+});
+
+// SAVES A PRDUCT BY ITS ID
+express_app.post('/saveproduct', function(req,res){
+	id = mongojs.ObjectId(req.body.product._id);
+	db.product.save({
+		_id:id,
+		name:req.category.name,
+		id_cat:mongojs.ObjectId(req.body.product.id_cat),
+		image:req.body.product.image,
+		prix:req.body.product.prix
+	},
+	function(err, docs) {
+		console.log(("Enregistre le produit [ " + req.body.category.name + " ]"));
+		console.log(docs);
+		res.json(docs);
+	});
+});
+
+// REMOVE A PRODUCT BY ITS ID
+express_app.post('/removeproduct', function(req,res){
+	productId = mongojs.ObjectId(req.body.productId);
+	db.product.remove({_id:productId}, function(err, docs) {
+		console.log("Supprime un produit [ " + req.body.productId + " ]");
 		console.log(docs);
 		res.json(docs);
 	});
