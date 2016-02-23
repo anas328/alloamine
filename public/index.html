@@ -11,10 +11,9 @@
 	</head>
 	<body ng-app="alloamine_module">
 
-		<!-- div class="container" ng-controller="AppCtrl" -->
 		<div class="container" ng-controller="alloamine_controller">
 
-			<h1>...</h1>
+			<h1>Catgory</h1>
 			<table class="table">
 				<thead>
 					<tr>
@@ -27,7 +26,7 @@
 					<tr>
 						<td><input type="text" class="form-control" ng-model="newcategory.name"></td>
 						<td><button class="btn btn-primary" type="button" ng-click="saveCategory()">save</button></td>
-						<td><button class="btn btn-primary" type="button" ng-click="clear()">clear</button></td>
+						<td><button class="btn btn-primary" type="button" ng-click="clearCategory()">clear</button></td>
 					</tr>
 					<tr ng-repeat="category in categories">
 						<td><button class="btn btn-primary" type="button" ng-click="updateSelectedCategory(category._id)">{{category.name}}</button></td>
@@ -40,7 +39,83 @@
 					</tr>
 				</tbody>
 			</table>
-			{{selectedcategory.name}}
+
+			<div class="container">
+				<h1>Product {{selectedcategory.name}}</h1>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>name</th>
+							<th>prix</th>
+							<th>actions</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="text" class="form-control" ng-model="newproduct.name"></td>
+							<td><input type="text" class="form-control" ng-model="newproduct.prix"></td>
+							<td><button class="btn btn-primary" type="button" ng-click="saveProduct()">save</button></td>
+							<td><button class="btn btn-primary" type="button" ng-click="clearProduct()">clear</button></td>
+						</tr>
+						<tr ng-repeat="product in products">
+							<td><button class="btn btn-primary" type="button" ng-click="updateSelectedProduct(product._id)">{{product.name}}</button></td>
+							<td>{{product.prix}}</td>
+							<td>
+								<button class="btn btn-danger" type="button" ng-click="removeProduct(product._id)">remove</button>
+							</td>
+							<td>
+								<button class="btn btn-info" type="button" ng-click="updateProduct(product)">update</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="container">
+					<h1>{{selectedproduct.name}}</h1>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>name</th>
+								<th>prix</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{selectedproduct.name}}</td>
+								<td>{{selectedproduct.prix}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+			<h1>Location</h1>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>name</th>
+						<th>actions</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><input type="text" class="form-control" ng-model="newdistrict.name"></td>
+						<td><button class="btn btn-primary" type="button" ng-click="saveDistrict()">save</button></td>
+						<td><button class="btn btn-primary" type="button" ng-click="clearDistrict()">clear</button></td>
+					</tr>
+					<tr ng-repeat="district in districts">
+						<td>{{district.name}}</td>
+						<td>
+							<button class="btn btn-danger" type="button" ng-click="removeDistrict(district._id)">remove</button>
+						</td>
+						<td>
+							<button class="btn btn-info" type="button" ng-click="updateDistrict(district)">update</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
 		</div>
 
 		<!-- ANGULAR COMPONENTS -->

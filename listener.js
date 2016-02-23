@@ -41,13 +41,13 @@ express_app.post('/district', function(req,res){
 
 // SAVES A DISTRICT BY ITS ID
 express_app.post('/savedistrict', function(req,res){
-	id = mongojs.ObjectId(req.body.district._id);
+	id = mongojs.ObjectId(req.body.newdistrict._id);
 	db.district.save({
 		_id:id,
-		name:req.body.district.name
+		name:req.body.newdistrict.name
 	},
 	function(err, docs) {
-		console.log(("Enregistre le quartier [ " + req.body.district.name + " ]"));
+		console.log(("Enregistre le quartier [ " + req.body.newdistrict.name + " ]"));
 		console.log(docs);
 		res.json(docs);
 	});
@@ -63,10 +63,10 @@ express_app.post('/removedistrict', function(req,res){
 	});
 });
 
-// RETRIEVES ALL THE DISTRCTS
+// RETRIEVES ALL THE CATEGORIES
 express_app.post('/categories', function(req,res){
 	db.category.find(function(err, docs) {
-		console.log("Recuperation les categories");
+		console.log("Recuperation des categories");
 		console.log(docs);
 		res.json(docs);
 	});
@@ -115,7 +115,7 @@ express_app.post('/products', function(req,res){
 	cat_id = mongojs.ObjectId(category._id)
 	console.log(category);
 	db.product.find({"id_cat":cat_id}, function(err, docs) {
-		console.log(("Recuperation des produits de la categorie [ " + category._id + " ]"));
+		console.log(("Recuperation des produits de la categorie [ " + category.name + " ]"));
 		console.log(docs);
 		res.json(docs);
 	});
@@ -124,7 +124,7 @@ express_app.post('/products', function(req,res){
 // RETRIEVES A PRODUCT BY ITS ID
 express_app.post('/product', function(req,res){
 	productId = mongojs.ObjectId(req.body.productId);
-	db.producct.find({_id:productId}, function(err, doc) {
+	db.product.findOne({_id:productId}, function(err, doc) {
 		console.log(("Recuperation du produit [ " + req.body.productId +" ]"));
 		console.log(doc);
 		res.json(doc);
@@ -133,16 +133,17 @@ express_app.post('/product', function(req,res){
 
 // SAVES A PRDUCT BY ITS ID
 express_app.post('/saveproduct', function(req,res){
-	id = mongojs.ObjectId(req.body.product._id);
+
+	id = mongojs.ObjectId(req.body.newproduct._id);
 	db.product.save({
 		_id:id,
-		name:req.category.name,
-		id_cat:mongojs.ObjectId(req.body.product.id_cat),
-		image:req.body.product.image,
-		prix:req.body.product.prix
+		name:req.body.newproduct.name,
+		id_cat:mongojs.ObjectId(req.body.newproduct.cat_id),
+		image:req.body.newproduct.image,
+		prix:req.body.newproduct.prix
 	},
 	function(err, docs) {
-		console.log(("Enregistre le produit [ " + req.body.category.name + " ]"));
+		console.log(("Enregistre le produit [ " + req.body.newproduct.name + " ]"));
 		console.log(docs);
 		res.json(docs);
 	});
